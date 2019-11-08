@@ -9,7 +9,7 @@ CFileHandler::CFileHandlerIterator::operator++()
 {
     m_pPosition = reinterpret_cast<const BYTE*>( 
 		memchr( m_pPosition, '\n', m_cbFileSize - m_cbOffset ) 
-	);
+    );
 
     if(m_pPosition) m_pPosition++;
 
@@ -29,7 +29,7 @@ CFileHandler::CFileHandlerIterator::operator++(int)
 
 
 CFileHandler::CFileHandler()
-	: m_pbData( nullptr )
+    : m_pbData( nullptr )
     , m_pbCurrentPosition( nullptr )
     , m_cbFileSize( 0 )
     , m_cbOffset( 0 )
@@ -53,7 +53,7 @@ void CFileHandler::Open( LPCWSTR szFileName )
 {
     if(m_bIsOpened) {
         Unmap();
-	}
+    }
 
     //
     // Here I get file handle
@@ -61,14 +61,14 @@ void CFileHandler::Open( LPCWSTR szFileName )
     CHandle hFile;
 
     hFile.m_h = CreateFile(
-	    szFileName,
+        szFileName,
         GENERIC_READ,
         FILE_SHARE_READ,
         nullptr,
         OPEN_EXISTING,
         0 /* dwFlagsAndAttributes */,
         nullptr
-	);
+    );
 
     if(hFile == INVALID_HANDLE_VALUE) {
         WIN32_ERROR_THROW_LAST();
@@ -94,13 +94,13 @@ void CFileHandler::Open( LPCWSTR szFileName )
     CHandle hFileMapping;
 
     hFileMapping.m_h = CreateFileMapping(
-	    hFile,
+        hFile,
         nullptr,
         PAGE_READONLY,
         0 /* dwMaximumSizeHigh */,
         0 /* dwMaximumSizeLow */,
         nullptr
-	);
+    );
 
     if(!hFileMapping) {
         WIN32_ERROR_THROW_LAST();

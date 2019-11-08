@@ -11,7 +11,7 @@ class CFileHandler
     public:
 
         explicit CFileHandlerIterator( const BYTE* pPosition, LONGLONG cbSize ) noexcept
-			: m_pPosition( pPosition )
+            : m_pPosition( pPosition )
             , m_cbFileSize( cbSize )
             , m_cbOffset( 0 )
         { }
@@ -69,7 +69,7 @@ private:
     void Unmap();
 
 private:
-	const BYTE* m_pbData;
+    const BYTE* m_pbData;
     const BYTE* m_pbCurrentPosition;
 
     LONGLONG m_cbFileSize;
