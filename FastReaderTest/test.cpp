@@ -8,14 +8,14 @@
 #pragma endregion 
 
 constexpr auto szNoSuchFile = L"./NoSuchFile.txt";
-constexpr auto szTextFile = L"./TestFile.txt";
+constexpr auto szTextFile = L"../TestFile.txt";
 
 TEST( CFileHandler, NoSuchFile )
 {
     ASSERT_THROW(
         CFileHandler file( szNoSuchFile ),
         CWin32Error
-	);
+    );
 }
 
 TEST( CFileHandler, NoSuchFileOutput )
@@ -32,9 +32,33 @@ TEST( CFileHandler, NoSuchFileOutput )
         std::wcout << std::endl << error.Description() << std::endl;
 #else
         UNREFERENCED_PARAMETER( error );
-
         std::wcout << std::endl << L"Output is available only in debug builds\n" << std::endl;
 #endif
 
     }
+}
+
+TEST( CFileHandler, ExistingFile )
+{
+    ASSERT_NO_THROW(
+        CFileHandler file( szTextFile );
+    );
+}
+
+TEST( CFileHandler, ExistingFileOutput )
+{
+    CFileHandler file( szTextFile );
+
+#ifdef _DEBUG
+    std::cout << std::endl;
+
+    for(const auto line : file) {
+        std::cout << line;
+    }
+
+    std::cout << std::endl << std::endl;
+#else
+    std::wcout << std::endl << L"Output is available only in debug builds\n" << std::endl;
+#endif
+
 }

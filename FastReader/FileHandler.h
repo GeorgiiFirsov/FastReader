@@ -11,9 +11,10 @@ class CFileHandler
     public:
 
         explicit CFileHandlerIterator( const BYTE* pPosition, LONGLONG cbSize ) noexcept
-            : m_pPosition( pPosition )
-            , m_cbFileSize( cbSize )
+            : m_cbFileSize( cbSize )
             , m_cbOffset( 0 )
+            , m_pbPosition( pPosition )
+            , m_pbEndOfLine( (PBYTE)memchr( pPosition, '\n', cbSize ) + 1 )
         { }
 
         ~CFileHandlerIterator() = default;
@@ -24,21 +25,26 @@ class CFileHandler
         CFileHandlerIterator& operator=( const CFileHandlerIterator& ) = default;
         CFileHandlerIterator& operator=( CFileHandlerIterator&& ) = default;
 
-        value_type operator*() const noexcept
-        { return reinterpret_cast<LPCSTR>( m_pPosition ); }
+        std::string operator*() const noexcept
+        {
+            return m_pbEndOfLine
+                ? std::string( (CHAR*)m_pbPosition, (CHAR*)m_pbEndOfLine )
+				: std::string( (CHAR*)m_pbPosition, m_cbFileSize - m_cbOffset );
+        }
 
         bool operator==( const CFileHandlerIterator& other ) const noexcept
-        { return this->m_pPosition == other.m_pPosition; }
+        { return this->m_pbPosition == other.m_pbPosition; }
 
         bool operator!=( const CFileHandlerIterator& other ) const noexcept
-        { return this->m_pPosition != other.m_pPosition; }
+        { return this->m_pbPosition != other.m_pbPosition; }
 
         CFileHandlerIterator& operator++();   // prefix
         CFileHandlerIterator operator++(int); // postfix
 
     private:
         LONGLONG m_cbFileSize, m_cbOffset;
-        const BYTE* m_pPosition;
+        const BYTE* m_pbPosition;
+        const BYTE* m_pbEndOfLine;
     };
 
     using iterator = CFileHandlerIterator;

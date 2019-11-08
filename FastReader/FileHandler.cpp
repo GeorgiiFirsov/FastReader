@@ -7,11 +7,26 @@
 CFileHandler::CFileHandlerIterator& 
 CFileHandler::CFileHandlerIterator::operator++()
 {
-    m_pPosition = reinterpret_cast<const BYTE*>( 
-        memchr( m_pPosition, '\n', m_cbFileSize - m_cbOffset ) 
-    );
+    size_t cbLineLen = m_pbEndOfLine
+        ? std::distance( m_pbPosition, m_pbEndOfLine )
+		: m_cbFileSize - m_cbOffset;
 
-    if(m_pPosition) m_pPosition++;
+    m_pbPosition = m_pbEndOfLine;
+
+    if(m_pbEndOfLine)
+    {
+        m_pbEndOfLine = reinterpret_cast<const BYTE*>( 
+            memchr( m_pbEndOfLine, '\n', m_cbFileSize - m_cbOffset ) 
+        );
+
+        if(m_pbEndOfLine) m_pbEndOfLine++;
+
+        m_cbOffset += static_cast<LONGLONG>( cbLineLen );
+    }
+    else
+    {
+        m_cbOffset = m_cbFileSize;
+    }
 
     return *this;
 }
