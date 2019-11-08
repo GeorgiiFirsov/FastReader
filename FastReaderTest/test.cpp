@@ -4,6 +4,7 @@
 
 #include "../FastReader/FileHandler.cpp"
 #include "../FastReader/Win32Error.cpp"
+#include <chrono>
 
 #pragma endregion 
 
@@ -61,4 +62,50 @@ TEST( CFileHandler, ExistingFileOutput )
     std::wcout << std::endl << L"Output is available only in debug builds\n" << std::endl;
 #endif
 
+}
+
+
+
+TEST( Timing, CFileHandler )
+{
+    CFileHandler file( szTextFile );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    for(const auto& line : file)
+    {
+        std::string sTest = line;
+        UNREFERENCED_PARAMETER( sTest );
+    }
+
+    auto finish = std::chrono::high_resolution_clock::now();
+
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>( finish - start );
+
+    std::cout << std::endl
+              << "CFileHandler: " << duration.count() << " ns."
+              << std::endl << std::endl;
+}
+
+
+TEST( Timing, fstream )
+{
+    std::ifstream file( szTextFile );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    std::string line;
+    while(std::getline( file, line ))
+    {
+        std::string sTest = line;
+        UNREFERENCED_PARAMETER( sTest );
+    }
+
+    auto finish = std::chrono::high_resolution_clock::now();
+
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>( finish - start );
+
+    std::cout << std::endl
+              << "std::ifstream: " << duration.count() << " ns."
+              << std::endl << std::endl;
 }

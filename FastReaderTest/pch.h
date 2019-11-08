@@ -11,3 +11,5 @@
 #include "../FastReader/FileHandler.h"
 #include "../FastReader/Win32Error.h"
 
+#include <fstream>
+

@@ -53,6 +53,11 @@ CFileHandler::CFileHandler()
 
 
 CFileHandler::CFileHandler( const std::wstring& sFileName )
+    : m_pbData( nullptr )
+    , m_pbCurrentPosition( nullptr )
+    , m_cbFileSize( 0 )
+    , m_cbOffset( 0 )
+    , m_bIsOpened( false )
 {
     Open( sFileName.c_str() );
 }
