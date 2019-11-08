@@ -128,7 +128,7 @@ void CFileHandler::Open( LPCWSTR szFileName )
 
 
     //
-    // Filnally I get a pointer to mapped data
+    // Finally I get a pointer to mapped data
     //
     LPVOID pData = MapViewOfFile(
         hFileMapping,
