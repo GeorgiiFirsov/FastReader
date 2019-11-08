@@ -136,7 +136,7 @@ void CFileHandler::Open( LPCWSTR szFileName )
         0 /* dwFileOffsetHigh */,
         0 /* dwFileOffsetLow */,
         0 /* dwNumberOfBytesToMap */
-	);
+    );
 
     if(!pData) {
         WIN32_ERROR_THROW_LAST();
