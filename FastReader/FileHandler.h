@@ -6,7 +6,7 @@
 class CFileHandler
 {
     class CFileHandlerIterator
-		: std::iterator<std::forward_iterator_tag, LPCSTR>
+        : std::iterator<std::forward_iterator_tag, LPCSTR>
     {
     public:
 

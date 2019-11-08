@@ -8,7 +8,7 @@ CFileHandler::CFileHandlerIterator&
 CFileHandler::CFileHandlerIterator::operator++()
 {
     m_pPosition = reinterpret_cast<const BYTE*>( 
-		memchr( m_pPosition, '\n', m_cbFileSize - m_cbOffset ) 
+        memchr( m_pPosition, '\n', m_cbFileSize - m_cbOffset ) 
     );
 
     if(m_pPosition) m_pPosition++;
@@ -111,7 +111,7 @@ void CFileHandler::Open( LPCWSTR szFileName )
     // Filnally I get a pointer to mapped data
     //
     LPVOID pData = MapViewOfFile(
-	    hFileMapping,
+        hFileMapping,
         FILE_MAP_READ,
         0 /* dwFileOffsetHigh */,
         0 /* dwFileOffsetLow */,
