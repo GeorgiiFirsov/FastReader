@@ -9,7 +9,7 @@ CFileHandler::CFileHandlerIterator::operator++()
 {
     size_t cbLineLen = m_pbEndOfLine
         ? std::distance( m_pbPosition, m_pbEndOfLine )
-		: m_cbFileSize - m_cbOffset;
+        : m_cbFileSize - m_cbOffset;
 
     m_pbPosition = m_pbEndOfLine;
 

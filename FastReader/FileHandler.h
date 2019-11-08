@@ -29,7 +29,7 @@ class CFileHandler
         {
             return m_pbEndOfLine
                 ? std::string( (CHAR*)m_pbPosition, (CHAR*)m_pbEndOfLine )
-				: std::string( (CHAR*)m_pbPosition, m_cbFileSize - m_cbOffset );
+                : std::string( (CHAR*)m_pbPosition, m_cbFileSize - m_cbOffset );
         }
 
         bool operator==( const CFileHandlerIterator& other ) const noexcept
