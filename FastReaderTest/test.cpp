@@ -4,7 +4,6 @@
 
 #include "../FastReader/FileHandler.cpp"
 #include "../FastReader/Win32Error.cpp"
-#include <chrono>
 
 #pragma endregion 
 
