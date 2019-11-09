@@ -7,6 +7,18 @@
 
 #pragma endregion 
 
+#pragma region Settings
+
+// ----------- Settings -----------
+#define _units nanoseconds
+#define loops_per_test 3
+#define tests_count 10
+
+// ---------- Do not edit ---------
+#define units std::chrono::_units
+
+#pragma endregion
+
 constexpr auto szNoSuchFile = L"./NoSuchFile.txt";
 constexpr auto szTextFile = L"../TestFile.txt";
 
@@ -69,20 +81,35 @@ TEST( Timing, CFileHandler )
 {
     CFileHandler file( szTextFile );
 
-    auto start = std::chrono::high_resolution_clock::now();
+    std::vector<size_t> results;
+    results.reserve( tests_count );
 
-    for(const auto& line : file)
+    for(auto test = 0; test < tests_count; test++)
     {
-        std::string sTest = line;
-        UNREFERENCED_PARAMETER( sTest );
+        auto start = std::chrono::high_resolution_clock::now();
+
+        for(auto tries = 0; tries < loops_per_test; tries++)
+        {
+            for(const auto& line : file)
+            {
+                std::string sTest = line;
+                UNREFERENCED_PARAMETER( sTest );
+            }
+        }
+
+        auto finish = std::chrono::high_resolution_clock::now();
+
+        auto duration = std::chrono::duration_cast<units>( finish - start );
+
+        results.push_back( duration.count() );
     }
 
-    auto finish = std::chrono::high_resolution_clock::now();
-
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>( finish - start );
+    auto average = static_cast<double>(
+        std::accumulate( results.cbegin(), results.cend(), static_cast<size_t>( 0 ) )
+    ) / results.size();
 
     std::cout << std::endl
-              << "CFileHandler: " << duration.count() << " ns."
+              << "CFileHandler: " << average
               << std::endl << std::endl;
 }
 
@@ -91,20 +118,37 @@ TEST( Timing, fstream )
 {
     std::ifstream file( szTextFile );
 
-    auto start = std::chrono::high_resolution_clock::now();
+    std::vector<size_t> results;
+    results.reserve( tests_count );
 
-    std::string line;
-    while(std::getline( file, line ))
+    for(auto test = 0; test < tests_count; test++)
     {
-        std::string sTest = line;
-        UNREFERENCED_PARAMETER( sTest );
+        auto start = std::chrono::high_resolution_clock::now();
+
+        for(auto tries = 0; tries < loops_per_test; tries++)
+        {
+            std::string line;
+            while(std::getline( file, line ))
+            {
+                std::string sTest = line;
+                UNREFERENCED_PARAMETER( sTest );
+            }
+            file.clear();
+            file.seekg( 0, std::ios_base::beg );
+        }
+
+        auto finish = std::chrono::high_resolution_clock::now();
+
+        auto duration = std::chrono::duration_cast<units>( finish - start );
+
+        results.push_back( duration.count() );
     }
 
-    auto finish = std::chrono::high_resolution_clock::now();
-
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>( finish - start );
+    auto average = static_cast<double>(
+        std::accumulate( results.cbegin(), results.cend(), static_cast<size_t>( 0 ) )
+    ) / results.size();
 
     std::cout << std::endl
-              << "std::ifstream: " << duration.count() << " ns."
+              << "std::ifstream: " << average
               << std::endl << std::endl;
 }
