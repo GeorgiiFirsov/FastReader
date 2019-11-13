@@ -21,7 +21,7 @@ CFileHandler::CFileHandlerIterator::operator++()
 
         if(m_pbEndOfLine) m_pbEndOfLine++;
 
-        m_cbOffset += static_cast<LONGLONG>( cbLineLen );
+        m_cbOffset += static_cast<ULONGLONG>( cbLineLen );
     }
     else
     {

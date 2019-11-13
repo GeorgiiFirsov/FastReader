@@ -6,7 +6,6 @@ class CWin32Error
 {
 public:
     explicit CWin32Error( DWORD dwErrorCode );
-    ~CWin32Error() = default;
 
     DWORD Code() const noexcept { return m_dwCode; }
     LPCWSTR Description() const { return m_sDescription.c_str(); }

@@ -10,7 +10,7 @@ class CFileHandler
     {
     public:
 
-        explicit CFileHandlerIterator( const BYTE* pPosition, LONGLONG cbSize ) noexcept
+        explicit CFileHandlerIterator( const BYTE* pPosition, ULONGLONG cbSize ) noexcept
             : m_cbFileSize( cbSize )
             , m_cbOffset( 0 )
             , m_pbPosition( pPosition )
@@ -42,7 +42,7 @@ class CFileHandler
         CFileHandlerIterator operator++(int); // postfix
 
     private:
-        LONGLONG m_cbFileSize, m_cbOffset;
+        ULONGLONG m_cbFileSize, m_cbOffset;
         const BYTE* m_pbPosition;
         const BYTE* m_pbEndOfLine;
     };
@@ -78,8 +78,8 @@ private:
     const BYTE* m_pbData;
     const BYTE* m_pbCurrentPosition;
 
-    LONGLONG m_cbFileSize;
-    LONGLONG m_cbOffset;
+    ULONGLONG m_cbFileSize;
+    ULONGLONG m_cbOffset;
 
     bool m_bIsOpened;
 };
